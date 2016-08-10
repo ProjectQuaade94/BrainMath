@@ -1,59 +1,84 @@
 package Game;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Game {
 
-	private int qs = 0, points = 0,ans1,ans2,ans,input,mode,difficulty,nrAmount;
-	private String strMode;
-	private long time1,time2,times;
+	private int q, tq = 10, coins = 0,ans1,ans2,ans,input,mode,difficulty,nrAmount,userId=-1,skip;
+	private String sign;
+	private String strMode[] = {"'+' (Addition)","'-' (Subtraction)","'*' (Multiplication)","'/' (Division)"};
+	private String strDifficulty[] = {"Very Easy","Easy","Medium","Hard","Challenge Mode"};
 	private Scanner sc = new Scanner(System.in);
+	User U = new User();
+
+
 
 	public void game() {
 
+		//FAKE LOGIN HERE
+		userId = 0;
+		difficulty = U.getDifficulty(userId);
+		mode = U.getMode(userId);
+		skip = U.getSkip(userId);
+
 		startupScreen();
-		askDifficulty();
-		if(difficulty != 5){
-			askMode();
-		}
+
 		//Game Loop
 		while(true){
 
 			//stops the game at X questions
-			qs++;
+			q++;
 			question();
-			if(qs>=10){
+			if(q>=tq){
 				break;			}
 		}
-		pr("Overall Score: "+ points + "/" + qs*5);
-		pr("Average time spent per question: " + times/qs + " Seconds");
+		U.setBalance(userId, (U.getBalance(userId) + coins));
+		pr("###############################################");
+		pr("Level Complete!");
+		pr("Level Score: "+ coins + "/" + q*5);
+		pr("Skips spent: " + (U.getSkip(userId)-skip) + "     Skips left: " + skip);
+		U.setSkip(userId, skip);
 		pr("");
-		pr("Game will restart in 15 seconds!");
-		qs = 0;
+		pr("+" + coins + " Coins earned by " + U.getUserName(userId));
+		coins = 0;
+		pr(U.getUserName(userId) + "'s total Coins: " + U.getBalance(userId));
+		pr("");
+		pr("Press 1 to go to continue...!");
+		q = 0;
+		try{
+			if(sc.nextInt()==1){
+			}
+		}catch(Exception e){
+			pr("Wrong input, try again");
+		}
 	}
 
 	private void askMode() {
 		pr("Select Mode:");
-		pr("1: +");
-		pr("2: -");
-		pr("3: *");
-		pr("4: /");
-		input = sc.nextInt();
+		pr("1: + (Addition)");
+		pr("2: - (Subtraction)");
+		pr("3: * (Multiplication)");
+		pr("4: / (Division)");
+		try{
+			input = sc.nextInt();
+		}catch(Exception e){
+			pr("Wrong input, try again");
+		}
 		if(input == 1){
 			mode = 1;
-			pr("Selected: '+'");
+
+			pr("Selected: " + strMode[mode-1]);
 		}else if (input == 2){
 			mode = 2;
-			pr("Selected: '-'");
+			pr("Selected: " + strMode[mode-1]);
 		}else if (input == 3){
 			mode = 3;
-			pr("Selected: '*'");
+			pr("Selected: " + strMode[mode-1]);
 		}else if (input == 4){
 			mode = 4;
-			pr("Selected: '/'");
+			pr("Selected: " + strMode[mode-1]);
 		}
-
+		U.setMode(userId, mode);
 	}
 	private void askDifficulty() {
 		pr("Select Difficulty:");
@@ -61,63 +86,107 @@ public class Game {
 		pr("2: Easy");
 		pr("3: Medium");
 		pr("4: Hard");
-		pr("5: Challenge Mode (X5 points)");
-		input = sc.nextInt();
+		pr("5: Challenge Mode (X5 coins)");
+		try{
+			input = sc.nextInt();
+		}catch(Exception e){
+			pr("Wrong input, try again");
+		}
 		if(input == 1){
 			difficulty = 1;
-			pr("Selected: 'Very Easy'");
+			pr("Selected: " + strDifficulty[difficulty-1]);
 		}else if (input == 2){
 			difficulty = 2;
-			pr("Selected: 'Easy'");
+			pr("Selected: " + strDifficulty[difficulty-1]);
 		}else if (input == 3){
 			difficulty = 3;
-			pr("Selected: 'Medium'");
+			pr("Selected: " + strDifficulty[difficulty-1]);
 		}else if (input == 4){
 			difficulty = 4;
-			pr("Selected: 'Hard'");
+			pr("Selected: " + strDifficulty[difficulty-1]);
 		}else if (input == 5){
 			difficulty = 5;
-			pr("Selected: 'Challenge Mode'");
+			pr("Selected: " + strDifficulty[difficulty-1]);
 		}
+		U.setDifficulty(userId, difficulty);
 	}
 
 
 	private void startupScreen() {
 		while(true){
 
-			pr("Welcome to the math game");
+			pr("Welcome to Brain Math!");
+			pr("");
+			pr("User: " + U.getUserName(userId) + "      Coins: " + U.getBalance(userId) + "      Skips: " + U.getSkip(userId));
+			pr("Mode: " + strMode[mode-1] + "      Difficulty: " + strDifficulty[difficulty-1]);
+			pr("");
 			pr("Press 1 to begin");
-			pr("Press 2 for about");
-			pr("Press 3 for help");
+			pr("Press 2 to change mode");
+			pr("Press 3 to change difficulty");
+			pr("Press 4 to go to the store");
+			pr("Press 5 for about/help");
 			pr("");
 			try{
 				input = sc.nextInt();
-			}catch(InputMismatchException IM){
-				pr("Game can't handle anything but numbers, closing game..");
-				System.exit(0);
+			}catch(Exception e){
+				pr("Wrong input, try again");
 			}
 			if(input==1){
 				break;
 			}else if(input==2){
+				askMode();
+
+			}else if(input == 3){
+				askDifficulty();
+
+			}else if(input == 4){
+				store();
+
+			}else if(input==5){
+				pr("ABOUT:");
+				pr("");
 				pr("This game was created by Lars Quaade with the idea of improving math skills and speed for people at any level of expertise");
 				pr("");
-				pr("Press '4' to go back");
+				pr("HELP:");
 				pr("");
-				input = sc.nextInt();
-				if(input==4){
-				}
-			}else if(input==3){
-				pr("Upon pressing '1' to start the game, you will be given a math question and the timer will begin. You will need to type the answer and then hit 'enter'. for each correct answer you will recieve 5 points and for each wrong answer, you will loose 1 point. Good Luck :-)");
+				pr("Upon pressing '1' to start the game, you will be given a math question. You will need to type the answer and then hit 'enter'. for each correct answer you will recieve 5 coins and for each wrong answer, you will loose 1 coin. The coins can be spent in the store. Skips allow you to skip a question without recieving a reward. Good Luck :-)");
 				pr("");
-				pr("Press '4' to go back");
+				pr("Press '0' to go back");
 				pr("");
-				input = sc.nextInt();
-				if(input==4){
+				try{
+					input = sc.nextInt();
+				}catch(Exception e){
+					pr("Wrong input, try again");
+				}				if(input==0){
 				}
 			}else{
 				pr("Wrong Input, try again");
 			}
 		}		
+	}
+
+	private void store() {
+		pr("Skips kost 50 coins");
+		pr("Press 1 to buy a skip");
+		pr("Press 0 to go back");
+		while(true){
+			try{
+				input = sc.nextInt();
+			}catch(Exception e){
+				pr("Wrong input, try again");
+			}			if(input == 1){
+				if(U.getBalance(userId)>=50){
+					U.setBalance(userId, (U.getBalance(userId)-50));
+					U.setSkip(userId, (U.getSkip(userId)+1));
+					pr("-50 coins     +1 skip     "+ U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
+				}else{
+					pr("You do not have sufficient funds to buy that");
+				}
+			}else if(input == 0){
+				break;
+			}
+		}
+
 	}
 
 	private void pr(String message) {
@@ -163,43 +232,49 @@ public class Game {
 		//creates questions based on the mode
 		if(mode==1){
 			ans = ans1 + ans2;
-			strMode = "+";
+			sign = "+";
 		}else if (mode == 2){
 			ans = ans1 - ans2;
-			strMode = "-";
+			sign = "-";
 		}else if (mode == 3){
 			ans = ans1 * ans2;
-			strMode = "*";
+			sign = "*";
 		}else if (mode == 4){
 			ans1 = ans1*2;
 			ans2 = ans2*2;
 			ans = ans1 / ans2;
-			strMode = "/ (floor of)";
+			sign = "/ (floor of)";
 		}
+		pr("-----------------------------------------------");
+		pr("*** Coins: " + coins + " *** "+ "Skips: " + skip +" *** Question: " + q + "/" + tq);
+		pr("-----------------------------------------------");
+		pr(ans1 + " "+ sign + " " + ans2 + " = ?");
 
-		pr("*** Score: " + points + " *** "+ "Time: " + (time2-time1)/1000 + " Seconds ***");
-		pr("---------------------------------");
-		pr(ans1 + " "+ strMode + " " + ans2 + " = ?");
-		pr("");
-
-		time1 = System.currentTimeMillis();
 		while(true){
-			input = sc.nextInt();
-			if(input == ans){
+			try{
+				input = sc.nextInt();
+			}catch(Exception e){
+				pr("Wrong input, try again");
+			}			if(input == ans){
 				if (difficulty != 5){
-					pr("Correct! +5 points");
-					points+=5;
+					pr("Correct! +5 coins");
+					coins+=5;
 				}else if (difficulty == 5){
-					pr("Correct! +25 points");
-					points+=25;
+					pr("Correct! +25 coins");
+					coins+=25;
 				}
 				break;				
+			}else if(input == 00){
+				if(skip>0){
+					skip--;
+					break;
+				}else{
+					pr("You do not have any skips! Buy more in the store!");
+				}
 			}else{
-				pr("Wrong answer! -1 point");
-				points-=1;
+				pr("Wrong answer! -1 coin");
+				coins-=1;
 			}
 		}
-		time2 = System.currentTimeMillis();
-		times+=(time2-time1)/1000;
 	}
 }
