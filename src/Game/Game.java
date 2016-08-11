@@ -16,7 +16,7 @@ public class Game {
 	public void game() {
 
 		//FAKE LOGIN HERE
-		userId = 1;
+		userId = 0;
 		difficulty = U.getDifficulty(userId);
 		mode = U.getMode(userId);
 		skip = U.getSkip(userId);
@@ -33,7 +33,7 @@ public class Game {
 				break;			}
 		}
 		U.setBalance(userId, (U.getBalance(userId) + coins));
-		pr("###############################################");
+		pr("##################################################");
 		pr("Level Complete!");
 		if(mode == 5){
 			pr("Level Score: "+ coins + "/" + q*25);
@@ -220,17 +220,23 @@ public class Game {
 			nrAmount = 100;
 		}else if(difficulty == 3){
 			//medium
-			nrAmount = 250;
+			nrAmount = 200;
 		}else if(difficulty == 4){
 			//hard
-			nrAmount = 500;
+			nrAmount = 300;
 		}else if(difficulty == 5){
 			//challenge mode
 			mode = (int)((Math.random()*4)+1);
-			nrAmount = 1000;
+			nrAmount = 500;
 		}
 
 		//creates the random numbers
+		if(mode == 4){
+			nrAmount/=10;
+			if(difficulty == 1){
+				nrAmount+=5;
+			}
+		}
 		ans1 = (int)((Math.random()*nrAmount)+1);
 		ans2 = (int)((Math.random()*nrAmount)+1);
 
@@ -245,14 +251,14 @@ public class Game {
 			ans = ans1 * ans2;
 			sign = "*";
 		}else if (mode == 4){
-			ans1 = ans1*2;
-			ans2 = ans2*2;
-			ans = ans1 / ans2;
-			sign = "/ (floor of)";
+			
+			ans = ans1;
+			ans1 = ans1*ans2;
+			sign = "/";
 		}
-		pr("-----------------------------------------------");
-		pr("*** Coins: " + coins + " *** "+ "Skips: " + skip +" Type: 00 *** Question: " + q + "/" + tq);
-		pr("-----------------------------------------------");
+		pr("--------------------------------------------------------");
+		pr("*** Coins: " + coins + " *** "+ "Skips: " + skip +" (Type 00) *** Question: " + q + "/" + tq);
+		pr("--------------------------------------------------------");
 		pr(ans1 + " "+ sign + " " + ans2 + " = ?");
 
 		while(true){
