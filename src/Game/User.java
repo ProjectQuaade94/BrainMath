@@ -12,8 +12,8 @@ public class User{
 		this.addUser(1, 10000, "Ricardo", "password", 5, 1, 0);
 	}
 
-	public void addUser(int userId, int userBalance, String username, String userPassword, int userDifficulty, int userMode, int userSkip){
-		userArray.add(new ur(userId, userBalance, username, userPassword, userDifficulty, userMode, userSkip));
+	public void addUser(int userId, int userBalance, String userName, String userPassword, int userDifficulty, int userMode, int userSkip){
+		userArray.add(new ur(userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip));
 	}
 
 	public void setUserId(int index, int userId){
