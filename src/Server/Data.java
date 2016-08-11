@@ -32,7 +32,6 @@ public class Data {
 				k = i;
 				break;
 			}
-			System.out.println(i);
 		}
 		System.out.println("The id found is:" + ID.substring(0,k)+ ":");
 		

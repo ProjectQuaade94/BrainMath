@@ -11,8 +11,9 @@ public class ConnectionMySQL {
 	
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
-	private String password = "";
+	private String password = "Password123!";
 	private String answer, column;
+	private int dataInput;
 	ResultSet res;
 	Statement stt;
 
@@ -38,6 +39,18 @@ public class ConnectionMySQL {
 		}
 		if(col.equals("ba")){
 			column = "userBalance";
+		}else if(col.equals("na")){
+			column = "userName";
+		}else if(col.equals("pa")){
+			column = "userPassword";
+		}else if(col.equals("di")){
+			column = "userDifficulty";
+		}else if(col.equals("mo")){
+			column = "userMode";
+		}else if(col.equals("sk")){
+			column = "userSkip";
+		}else{
+			System.out.println("column text error (ConnectionMySQL)");
 		}
 		
 		try {
@@ -52,6 +65,43 @@ public class ConnectionMySQL {
 	}
 
 	public void setData(int userId, String col, String data) {
+		if(col.equals("ba")){
+			column = "userBalance";
+			dataInput = Integer.parseInt(data);
+		}else if(col.equals("na")){
+			column = "userName";
+		}else if(col.equals("pa")){
+			column = "userPassword";
+		}else if(col.equals("di")){
+			column = "userDifficulty";
+			dataInput = Integer.parseInt(data);
+		}else if(col.equals("mo")){
+			column = "userMode";
+			dataInput = Integer.parseInt(data);
+		}else if(col.equals("sk")){
+			column = "userSkip";
+			dataInput = Integer.parseInt(data);
+		}else{
+			System.out.println("column text error (ConnectionMySQL)");
+		}
+		if(column.equals("userName") || column.equals("userPassword")){
+			try {
+				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE id=" + userId);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE id=" + userId);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 		System.out.println("userId: " + userId + " col: " + col + " data: " + data);		
 	}
 }

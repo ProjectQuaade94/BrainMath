@@ -1,4 +1,4 @@
-package Game;
+
 
 import java.awt.EventQueue;
 
@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LoginGUI {
+public class MainGui {
 
 	private JFrame frame;
 	private JPasswordField passwordField;
@@ -27,7 +27,7 @@ public class LoginGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginGUI window = new LoginGUI();
+					MainGui window = new MainGui();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class LoginGUI {
 	/**
 	 * Create the application.
 	 */
-	public LoginGUI() {
+	public MainGui() {
 		initialize();
 	}
 

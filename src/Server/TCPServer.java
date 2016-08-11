@@ -3,7 +3,7 @@ package Server;
 import java.io.*;
 import java.net.*;
 
-import Game.User;
+import Client.User;
 
 
 class TCPServer{
@@ -22,11 +22,13 @@ class TCPServer{
 			Socket connectionSocket = welcomeSocket.accept();
 			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+			
 			clientSentence = inFromClient.readLine();
 			System.out.println("Received: " + clientSentence);
 			D.doData(clientSentence);
 			if(D.returnData()){
-				outToClient.writeBytes(D.answer());
+				System.out.println(D.answer() + " reached 'out to client'");
+				outToClient.writeBytes(D.answer()+'\n');
 			}
 		}
 	}

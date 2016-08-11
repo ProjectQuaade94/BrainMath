@@ -4,17 +4,30 @@ import java.io.*;
 import java.net.*;
 
 class TCPClient{
+	static String toServer;
+	static String fromServer;
+	
 	public static void main(String argv[]) throws Exception{
-		String sentence;
-		String modifiedSentence;
-		BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
-		Socket clientSocket = new Socket("localhost", 6789);
-		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-		BufferedReader inFromServer = new BufferedReader(new InputStreamReader   (clientSocket.getInputStream()));
-		sentence = inFromUser.readLine();
-		outToServer.writeBytes(sentence + '\n');
-		modifiedSentence = inFromServer.readLine();
-		System.out.println("FROM SERVER: " + modifiedSentence);
+		
+		Socket clientSocket;
+		DataOutputStream outToServer;
+		BufferedReader inFromServer;
+		User U = new User();
+		Game G = new Game();
+		
+		//		G.game();
+		
+		toServer = U.enCoder();
+		clientSocket = new Socket("localhost", 6789);
+		outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		inFromServer = new BufferedReader(new InputStreamReader   (clientSocket.getInputStream()));			
+		toServer = U.enCoder();
+		outToServer.writeBytes(toServer + '\n');
+		fromServer = inFromServer.readLine();
+		System.out.println(fromServer);
 		clientSocket.close();
+	}
+	public String getAnswer(){
+		return fromServer;
 	}
 }
