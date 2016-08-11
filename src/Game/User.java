@@ -9,6 +9,7 @@ public class User{
 
 	public User(){
 		this.addUser(0, 0, "Quaade94", "password", 1, 1, 5);
+		this.addUser(1, 10000, "Ricardo", "password", 5, 1, 0);
 	}
 
 	public void addUser(int userId, int userBalance, String username, String userPassword, int userDifficulty, int userMode, int userSkip){

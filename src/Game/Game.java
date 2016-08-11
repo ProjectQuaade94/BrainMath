@@ -16,7 +16,7 @@ public class Game {
 	public void game() {
 
 		//FAKE LOGIN HERE
-		userId = 0;
+		userId = 1;
 		difficulty = U.getDifficulty(userId);
 		mode = U.getMode(userId);
 		skip = U.getSkip(userId);
@@ -35,7 +35,12 @@ public class Game {
 		U.setBalance(userId, (U.getBalance(userId) + coins));
 		pr("###############################################");
 		pr("Level Complete!");
-		pr("Level Score: "+ coins + "/" + q*5);
+		if(mode == 5){
+			pr("Level Score: "+ coins + "/" + q*25);
+
+		}else{
+			pr("Level Score: "+ coins + "/" + q*5);
+		}
 		pr("Skips spent: " + (U.getSkip(userId)-skip) + "     Skips left: " + skip);
 		U.setSkip(userId, skip);
 		pr("");
@@ -43,10 +48,10 @@ public class Game {
 		coins = 0;
 		pr(U.getUserName(userId) + "'s total Coins: " + U.getBalance(userId));
 		pr("");
-		pr("Press 1 to go to continue...!");
+		pr("Press 0 to continue...!");
 		q = 0;
 		try{
-			if(sc.nextInt()==1){
+			if(sc.nextInt()==0){
 			}
 		}catch(Exception e){
 			pr("Wrong input, try again");
@@ -246,7 +251,7 @@ public class Game {
 			sign = "/ (floor of)";
 		}
 		pr("-----------------------------------------------");
-		pr("*** Coins: " + coins + " *** "+ "Skips: " + skip +" *** Question: " + q + "/" + tq);
+		pr("*** Coins: " + coins + " *** "+ "Skips: " + skip +" Type: 00 *** Question: " + q + "/" + tq);
 		pr("-----------------------------------------------");
 		pr(ans1 + " "+ sign + " " + ans2 + " = ?");
 
@@ -259,7 +264,7 @@ public class Game {
 				if (difficulty != 5){
 					pr("Correct! +5 coins");
 					coins+=5;
-				}else if (difficulty == 5){
+				}else{
 					pr("Correct! +25 coins");
 					coins+=25;
 				}
