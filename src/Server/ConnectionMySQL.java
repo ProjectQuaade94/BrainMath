@@ -11,8 +11,8 @@ public class ConnectionMySQL {
 
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
-	private String password = "";
-	private String answer, column;
+	private String password = "Password123!";
+	private String answer = "", column, userId;
 	private int dataInput;
 	ResultSet res;
 	Statement stt;
@@ -32,9 +32,55 @@ public class ConnectionMySQL {
 			System.err.println(e);		
 		}
 	}
-	public String getData(int userId, String col) {
+	
+	public String findUser(String userName) {
+		System.out.println("looking for " + userName + " in DB");
 		try {
-			res = stt.executeQuery("SELECT * FROM user WHERE userId = '" + userId + "'" );
+			res = stt.executeQuery("SELECT * FROM user WHERE userName = '" + userName + "'" );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			while(res.next()){
+				answer = res.getString("userId");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Returning answer from DB: " + answer);
+		if(answer.equals("")){
+			return "failed";
+		}
+		
+		return answer;
+	}
+	public String creatUser(String username, String password) {
+		try {
+			res = stt.executeQuery("SELECT COUNT(*) FROM user" );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			while(res.next()){
+				answer = res.getString(userId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			stt.execute("INSERT INTO user('userId', 'userBalance', 'userName', 'userPassword', 'userDifficulty', 'userMode', 'userSkip') VALUES("+Integer.parseInt(answer)+", "+0+", '"+username+"', '"+password+"', "+1+", "+1+", "+10+")");
+			System.out.println("DB: Successfully created user " + username);
+		} catch (SQLException e) {
+			System.out.println("DB: Failed to create user: " + username);
+			e.printStackTrace();
+		}
+		return answer;
+	}
+	
+	
+	public String getData(int ID, String col) {
+		try {
+			res = stt.executeQuery("SELECT * FROM user WHERE userId = '" + ID + "'" );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +113,7 @@ public class ConnectionMySQL {
 		return answer;
 	}
 
-	public String setData(int userId, String col, String data) {
+	public String setData(int ID, String col, String data) {
 		if(col.equals("id")){
 			column = "userId";
 			dataInput = Integer.parseInt(data);
@@ -92,23 +138,25 @@ public class ConnectionMySQL {
 		}
 		if(column.equals("userName") || column.equals("userPassword")){
 			try {
-				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE userId=" + userId);
-				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + userId);
+				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE userId=" + ID);
+				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + ID);
 			} catch (SQLException e) {
-				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + userId);
+				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + ID);
 				e.printStackTrace();
 			}
 		}else{
 			try {
-				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE userId=" + userId);
-				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + userId);
+				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE userId=" + ID);
+				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + ID);
 			} catch (SQLException e) {
-				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + userId);
+				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + ID);
 				e.printStackTrace();
 			}
 		}
-		System.out.println("userId: " + userId + " col: " + col + " data: " + data);
+		System.out.println("userId: " + ID + " col: " + col + " data: " + data);
 		return "Success";
 	}
+
+
 }
 

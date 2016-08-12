@@ -19,7 +19,7 @@ class TCPClient{
 		Socket clientSocket;
 		DataOutputStream outToServer;
 		BufferedReader inFromServer;
-		clientSocket = new Socket("82.211.208.220", 53789);
+		clientSocket = new Socket("localhost", 6789);
 		outToServer = new DataOutputStream(clientSocket.getOutputStream());
 		inFromServer = new BufferedReader(new InputStreamReader   (clientSocket.getInputStream()));			
 		outToServer.writeBytes(toServer + '\n');

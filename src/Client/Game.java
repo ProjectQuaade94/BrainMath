@@ -20,52 +20,118 @@ public class Game {
 	public void game() throws NumberFormatException, Exception {
 
 		//FAKE LOGIN HERE
-		userId = 0;
+		startUp();
+		while(true){
+			menu();
+
+			//Game Loop
+			while(true){
+
+				//stops the game at X questions
+				q++;
+				question();
+				if(q>=tq){
+					break;			}
+			}
+			currentBalance = U.getBalance(userId);
+			U.setBalance(userId, (currentBalance + coins));
+			pr("##################################################");
+			pr("Level Complete!");
+			if(mode == 5){
+				pr("Level Score: "+ coins + "/" + q*25);
+
+			}else{
+				pr("Level Score: "+ coins + "/" + q*5);
+			}
+			pr("Skips spent: " + (U.getSkip(userId)-skip) + "     Skips left: " + skip);
+			U.setSkip(userId, skip);
+			pr("");
+			pr("+" + coins + " Coins earned by " + U.getUserName(userId));
+			coins = 0;
+			pr(U.getUserName(userId) + "'s total Coins: " + U.getBalance(userId));
+			pr("");
+			pr("Press 0 to continue...!");
+			q = 0;
+			try{
+				if(sc.nextInt()==0){
+				}
+			}catch(Exception e){
+				pr("Wrong input, try again");
+			}
+		}
+	}
+
+	private void startUp() throws Exception {
+
+		pr("Connected to Server!");
+		pr("");
+		pr("Welcome to BrainMath");
+		pr("");
+		pr("Press 1 to login");
+		pr("Press 2 to create account");
+
+		input = sc.nextInt();
+		if(input==1){
+			login();
+		}else if(input==2){
+			createAccount();
+		}		
+	}
+
+	private void createAccount() throws NumberFormatException, Exception {
+		while(true){
+			pr("CREATE USER");
+			pr("Create Username:");
+			userName = sc.next();
+			if(U.findUserId(userName) == -1){
+				while(true){
+					pr("Create Password:");
+					userPassword = sc.next();
+					pr("Type it again:");
+					if(sc.next().equals(userPassword)){
+						break;
+					}else{
+						pr("The passwords did not match!");
+					}
+				}
+				U.createUser(userName, userPassword.toLowerCase());
+				pr("User created!");
+				break;
+			}else{
+				pr("That username already exists");			
+			}
+		}
+	}
+
+	private void login() throws NumberFormatException, Exception {
+
+		while(true){
+			while(true){
+				pr("LOGIN");
+				pr("Username: ");
+				userId = U.findUserId(sc.next());
+				if(userId == -1){
+					pr("User not found!");
+				}else{
+					break;
+				}
+			}
+			pr("Password: ");
+			if(sc.next().equals(U.getPassword(userId))){
+				break;
+			}else{
+				pr("Wrong Password");
+			}
+		}
+
 		userName = U.getUserName(userId);
 		userPassword = U.getPassword(userId);
 		difficulty = U.getDifficulty(userId);
 		mode = U.getMode(userId);
 		skip = U.getSkip(userId);
 		currentBalance = U.getBalance(userId);
-		
-		
 
-		startupScreen();
 
-		//Game Loop
-		while(true){
-
-			//stops the game at X questions
-			q++;
-			question();
-			if(q>=tq){
-				break;			}
-		}
-		currentBalance = U.getBalance(userId);
-		U.setBalance(userId, (currentBalance + coins));
-		pr("##################################################");
-		pr("Level Complete!");
-		if(mode == 5){
-			pr("Level Score: "+ coins + "/" + q*25);
-
-		}else{
-			pr("Level Score: "+ coins + "/" + q*5);
-		}
-		pr("Skips spent: " + (U.getSkip(userId)-skip) + "     Skips left: " + skip);
-		U.setSkip(userId, skip);
-		pr("");
-		pr("+" + coins + " Coins earned by " + U.getUserName(userId));
-		coins = 0;
-		pr(U.getUserName(userId) + "'s total Coins: " + U.getBalance(userId));
-		pr("");
-		pr("Press 0 to continue...!");
-		q = 0;
-		try{
-			if(sc.nextInt()==0){
-			}
-		}catch(Exception e){
-			pr("Wrong input, try again");
-		}
 	}
 
 	private void askMode() throws Exception {
@@ -127,10 +193,9 @@ public class Game {
 	}
 
 
-	private void startupScreen() throws NumberFormatException, Exception {
+	private void menu() throws NumberFormatException, Exception {
 		while(true){
 
-			pr("Welcome to Brain Math!");
 			pr("");
 			pr("User: " + U.getUserName(userId) + "      Coins: " + U.getBalance(userId) + "      Skips: " + U.getSkip(userId));
 			pr("Mode: " + strMode[mode-1] + "      Difficulty: " + strDifficulty[difficulty-1]);
@@ -140,6 +205,7 @@ public class Game {
 			pr("Press 3 to change difficulty");
 			pr("Press 4 to go to the store");
 			pr("Press 5 for about/help");
+			pr("Press 6 to quit");
 			pr("");
 			try{
 				input = sc.nextInt();
@@ -174,6 +240,10 @@ public class Game {
 					pr("Wrong input, try again");
 				}				if(input==0){
 				}
+			}else if(input==6){
+				U.closeConnection();
+				Thread.sleep(1000);
+				System.exit(0);
 			}else{
 				pr("Wrong Input, try again");
 			}
@@ -182,20 +252,23 @@ public class Game {
 
 	private void store() throws NumberFormatException, Exception {
 		pr("Skips cost 50 coins");
-		pr("Press 1 to buy a skip");
+		pr("Press 1 to buy skips");
 		pr("Press 0 to go back");
 		while(true){
 			try{
 				input = sc.nextInt();
 			}catch(Exception e){
 				pr("Wrong input, try again");
-			}			if(input == 1){
+			}			
+			if(input == 1){
+				pr("How many skips do you wish to buy?");
+				input = sc.nextInt();
 				currentBalance = U.getBalance(userId);
-				if(currentBalance>=50){
-					U.setBalance(userId, (currentBalance-50));
+				if(currentBalance>=50*input){
+					U.setBalance(userId, (currentBalance-50*input));
 					int currentSkips = U.getSkip(userId);
-					U.setSkip(userId, (currentSkips+1));
-					pr("-50 coins     +1 skip     "+ U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
+					U.setSkip(userId, (currentSkips+input));
+					pr("You payed: " + 50*input + " coins, and recieved: " + input + " skips     "+ U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
 				}else{
 					pr("You do not have sufficient funds to buy that");
 				}

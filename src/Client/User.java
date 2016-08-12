@@ -10,9 +10,25 @@ public class User{
 
 	}
 
-	//	public void addUser(int userId, int userBalance, String userName, String userPassword, int userDifficulty, int userMode, int userSkip){
-	//		userArray.add(new ur(userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip));
-	//	}
+		public int createUser(String userName, String userPassword)throws Exception{
+			userId = "0";
+			ret = "cre";
+			col = "xx";
+			message = userName + " " + userPassword;
+			return Integer.parseInt(C.client(userId, ret, col, message));
+		}
+	
+	public int findUserId(String userName) throws NumberFormatException, Exception{
+		userId = Integer.toString(0);
+		ret = "fin";
+		col = "xx";
+		message = userName.toLowerCase();
+		String answer = C.client(userId, ret, col, message);
+		if(answer.equals("failed")){
+			return -1;
+		}
+		return Integer.parseInt(answer);
+	}
 	
 	public int getUserId(int index) throws NumberFormatException, Exception{
 		//		return (userArray.get(index)).getUserId();
@@ -38,7 +54,8 @@ public class User{
 		ret = "get";
 		col = "na";
 		message = "";
-		return C.client(userId, ret, col, message);
+		String userName = C.client(userId, ret, col, message);
+		return userName.substring(0, 1).toUpperCase() + userName.substring(1,userName.length());
 	}
 
 	public void setUserName(int index, String userName) throws Exception {
@@ -84,8 +101,6 @@ public class User{
 		col = "ba";
 		message = Integer.toString(balance);
 		C.client(userId, ret, col, message);
-		System.out.println(C.client(userId, ret, col, message));
-
 	}
 
 	public int getDifficulty(int index) throws NumberFormatException, Exception{
@@ -140,6 +155,14 @@ public class User{
 		ret = "set";
 		col = "sk";
 		message = Integer.toString(skip);
+		C.client(userId, ret, col, message);
+	}
+	
+	public void closeConnection() throws Exception{
+		userId = Integer.toString(0);
+		ret = "clo";
+		col = "xx";
+		message = "";
 		C.client(userId, ret, col, message);
 	}
 
