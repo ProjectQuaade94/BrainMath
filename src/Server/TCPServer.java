@@ -9,8 +9,6 @@ import Client.User;
 class TCPServer{
 	public static void main(String argv[]) throws Exception{
 		
-		
-		
 		String clientSentence;
 		ServerSocket welcomeSocket = new ServerSocket(6789);
 		ConnectionMySQL CM = new ConnectionMySQL();

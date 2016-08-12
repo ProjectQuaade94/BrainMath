@@ -86,14 +86,14 @@ public class ConnectionMySQL {
 		}
 		if(column.equals("userName") || column.equals("userPassword")){
 			try {
-				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE id=" + userId);
+				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE UserId=" + userId);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{
 			try {
-				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE id=" + userId);
+				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE userId=" + userId);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

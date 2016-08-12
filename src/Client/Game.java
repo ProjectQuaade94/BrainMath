@@ -9,11 +9,15 @@ public class Game {
 	private String strMode[] = {"'+' (Addition)","'-' (Subtraction)","'*' (Multiplication)","'/' (Division)"};
 	private String strDifficulty[] = {"Very Easy","Easy","Medium","Hard","Challenge Mode"};
 	private Scanner sc = new Scanner(System.in);
-	User U = new User();
+	User U;
 
 
 
-	public void game() {
+	public Game(User u) {
+		this.U = u;
+	}
+
+	public void game() throws NumberFormatException, Exception {
 
 		//FAKE LOGIN HERE
 		userId = 0;
@@ -58,7 +62,7 @@ public class Game {
 		}
 	}
 
-	private void askMode() {
+	private void askMode() throws Exception {
 		pr("Select Mode:");
 		pr("1: + (Addition)");
 		pr("2: - (Subtraction)");
@@ -85,7 +89,7 @@ public class Game {
 		}
 		U.setMode(userId, mode);
 	}
-	private void askDifficulty() {
+	private void askDifficulty() throws Exception {
 		pr("Select Difficulty:");
 		pr("1: Very Easy");
 		pr("2: Easy");
@@ -117,7 +121,7 @@ public class Game {
 	}
 
 
-	private void startupScreen() {
+	private void startupScreen() throws NumberFormatException, Exception {
 		while(true){
 
 			pr("Welcome to Brain Math!");
@@ -170,7 +174,7 @@ public class Game {
 		}		
 	}
 
-	private void store() {
+	private void store() throws NumberFormatException, Exception {
 		pr("Skips kost 50 coins");
 		pr("Press 1 to buy a skip");
 		pr("Press 0 to go back");
@@ -251,7 +255,7 @@ public class Game {
 			ans = ans1 * ans2;
 			sign = "*";
 		}else if (mode == 4){
-			
+
 			ans = ans1;
 			ans1 = ans1*ans2;
 			sign = "/";
