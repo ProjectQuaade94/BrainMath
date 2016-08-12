@@ -8,7 +8,9 @@ public class Main {
 		TCPClient C = new TCPClient();
 		User U = new User(C);
 		Game G = new Game(U);
-		G.game();
+		while(true){
+			G.game();			
+		}
 		
 	}
 

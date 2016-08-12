@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Game {
 
-	private int q, tq = 10, coins = 0,ans1,ans2,ans,input,mode,difficulty,nrAmount,userId=-1,skip;
-	private String sign;
+	private int q, tq = 10, coins = 0,ans1,ans2,ans,input,mode,difficulty,nrAmount,userId=-1,skip, currentBalance;
+	private String sign, userName, userPassword;
 	private String strMode[] = {"'+' (Addition)","'-' (Subtraction)","'*' (Multiplication)","'/' (Division)"};
 	private String strDifficulty[] = {"Very Easy","Easy","Medium","Hard","Challenge Mode"};
 	private Scanner sc = new Scanner(System.in);
@@ -21,9 +21,14 @@ public class Game {
 
 		//FAKE LOGIN HERE
 		userId = 0;
+		userName = U.getUserName(userId);
+		userPassword = U.getPassword(userId);
 		difficulty = U.getDifficulty(userId);
 		mode = U.getMode(userId);
 		skip = U.getSkip(userId);
+		currentBalance = U.getBalance(userId);
+		
+		
 
 		startupScreen();
 
@@ -36,7 +41,8 @@ public class Game {
 			if(q>=tq){
 				break;			}
 		}
-		U.setBalance(userId, (U.getBalance(userId) + coins));
+		currentBalance = U.getBalance(userId);
+		U.setBalance(userId, (currentBalance + coins));
 		pr("##################################################");
 		pr("Level Complete!");
 		if(mode == 5){
@@ -175,7 +181,7 @@ public class Game {
 	}
 
 	private void store() throws NumberFormatException, Exception {
-		pr("Skips kost 50 coins");
+		pr("Skips cost 50 coins");
 		pr("Press 1 to buy a skip");
 		pr("Press 0 to go back");
 		while(true){
@@ -184,9 +190,11 @@ public class Game {
 			}catch(Exception e){
 				pr("Wrong input, try again");
 			}			if(input == 1){
-				if(U.getBalance(userId)>=50){
-					U.setBalance(userId, (U.getBalance(userId)-50));
-					U.setSkip(userId, (U.getSkip(userId)+1));
+				currentBalance = U.getBalance(userId);
+				if(currentBalance>=50){
+					U.setBalance(userId, (currentBalance-50));
+					int currentSkips = U.getSkip(userId);
+					U.setSkip(userId, (currentSkips+1));
 					pr("-50 coins     +1 skip     "+ U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
 				}else{
 					pr("You do not have sufficient funds to buy that");

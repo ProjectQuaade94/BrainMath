@@ -2,9 +2,7 @@ package Client;
 
 public class User{
 
-	//TODO: remove the initialized data 
-
-	private String userId = "0", ret="set", col="ba", message = "10", ask;
+	private String userId, ret, col, message;
 	TCPClient C;
 
 	public User(TCPClient c) {
@@ -15,31 +13,30 @@ public class User{
 	//	public void addUser(int userId, int userBalance, String userName, String userPassword, int userDifficulty, int userMode, int userSkip){
 	//		userArray.add(new ur(userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip));
 	//	}
+	
+	public int getUserId(int index) throws NumberFormatException, Exception{
+		//		return (userArray.get(index)).getUserId();
+		userId = Integer.toString(index);
+		ret = "get";
+		col = "id";
+		message = "";
+		return Integer.parseInt(C.client(userId, ret, col, message));
+	}
 
 	public void setUserId(int index, int ID) throws Exception{
 		//		(userArray.get(index)).setUserId(userId);
 		userId = Integer.toString(index);
 		ret = "set";
-		col = "mo";
+		col = "id";
 		message = Integer.toString(ID);
 		C.client(userId, ret, col, message);
 	}
-
-	public int getUserId(int index) throws NumberFormatException, Exception{
-		//		return (userArray.get(index)).getUserId();
-		userId = Integer.toString(index);
-		ret = "get";
-		col = "sk";
-		message = "";
-		return Integer.parseInt(C.client(userId, ret, col, message));
-	}
-
 
 	public String getUserName(int index) throws Exception{
 		//		return (userArray.get(index)).getUserName();
 		userId = Integer.toString(index);
 		ret = "get";
-		col = "sk";
+		col = "na";
 		message = "";
 		return C.client(userId, ret, col, message);
 	}
@@ -57,7 +54,7 @@ public class User{
 		//		return (userArray.get(index)).getUserPassword();
 		userId = Integer.toString(index);
 		ret = "get";
-		col = "sk";
+		col = "pa";
 		message = "";
 		return C.client(userId, ret, col, message);
 	}
@@ -75,7 +72,7 @@ public class User{
 		//		return (userArray.get(index)).getUserBalance();
 		userId = Integer.toString(index);
 		ret = "get";
-		col = "sk";
+		col = "ba";
 		message = "";
 		return Integer.parseInt(C.client(userId, ret, col, message));
 	}
@@ -87,13 +84,15 @@ public class User{
 		col = "ba";
 		message = Integer.toString(balance);
 		C.client(userId, ret, col, message);
+		System.out.println(C.client(userId, ret, col, message));
+
 	}
 
 	public int getDifficulty(int index) throws NumberFormatException, Exception{
 		//		return (userArray.get(index)).getUserDifficulty();
 		userId = Integer.toString(index);
 		ret = "get";
-		col = "sk";
+		col = "di";
 		message = "";
 		return Integer.parseInt(C.client(userId, ret, col, message));
 	}
@@ -111,7 +110,7 @@ public class User{
 		//		return (userArray.get(index)).getUserMode();
 		userId = Integer.toString(index);
 		ret = "get";
-		col = "sk";
+		col = "mo";
 		message = "";
 		return Integer.parseInt(C.client(userId, ret, col, message));
 	}
@@ -144,92 +143,4 @@ public class User{
 		C.client(userId, ret, col, message);
 	}
 
-	//	public int getUserArrayLength(){
-	//		return userArray.size();
-	//	}
-
-
-	//	public void removeUser(int index){
-	//		userArray.remove(index);
-	//	}
-
-	//	private class ur {
-	//
-	//
-	//		private int userId;
-	//		private int userBalance;
-	//		private String userName;
-	//		private String userPassword;
-	//		private int userDifficulty;
-	//		private int userMode;
-	//		private int userSkip;
-	//
-	//		private ur(int userId, int userBalance, String username, String userPassword, int userDifficulty, int userMode, int userSkip){
-	//
-	//			this.userPassword = userPassword;
-	//			this.userName = username;
-	//			this.userId = userId;
-	//			this.userBalance = userBalance;
-	//			this.userDifficulty = userDifficulty;
-	//			this.userMode = userMode;
-	//			this.userSkip = userSkip;
-	//		}
-	//
-	//		private int getUserId() {
-	//			return userId;
-	//		}
-	//
-	//		private void setUserId(int oprId) {
-	//			this.userId = oprId;
-	//		}
-	//
-	//		private String getUserName() {
-	//			return userName;
-	//		}
-	//
-	//		private void setUserName(String oprNavn) {
-	//			this.userName = oprNavn;
-	//		}
-	//
-	//		private String getUserPassword() {
-	//			return userPassword;
-	//		}
-	//
-	//		private void setUserPassword(String pwd) {
-	//			this.userPassword = pwd;
-	//		}
-	//
-	//		private int getUserBalance(){
-	//			return userBalance;
-	//		}
-	//		
-	//		private void setUserBalance(int balance) {
-	//			this.userBalance = balance;
-	//		}
-	//		
-	//		private int getUserDifficulty(){
-	//			return userDifficulty;
-	//		}
-	//		
-	//		private void setUserDifficulty(int difficulty) {
-	//			this.userDifficulty = difficulty;
-	//		}
-	//		
-	//		private int getUserMode(){
-	//			return userMode;
-	//		}
-	//		
-	//		private void setUserMode(int mode) {
-	//			this.userMode = mode;
-	//		}
-	//		
-	//		private int getUserSkip(){
-	//			return userSkip;
-	//		}
-	//		
-	//		private void setUserSkip(int skip) {
-	//			this.userSkip = skip;
-	//		}
-	//
-	//	}
 }

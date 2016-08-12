@@ -24,7 +24,6 @@ class TCPClient{
 		inFromServer = new BufferedReader(new InputStreamReader   (clientSocket.getInputStream()));			
 		outToServer.writeBytes(toServer + '\n');
 		fromServer = inFromServer.readLine();
-		System.out.println(fromServer);
 		clientSocket.close();
 		return fromServer;
 	}

@@ -16,7 +16,7 @@ public class Data {
 		if(returnData()){
 			data = cM.getData(userId, col);
 		}else{
-			cM.setData(userId,col,clientSentence.substring(15, clientSentence.length()));				
+			data = cM.setData(userId,col,clientSentence.substring(15, clientSentence.length()));				
 		}
 	}
 
@@ -33,7 +33,7 @@ public class Data {
 				break;
 			}
 		}
-		System.out.println("The id found is:" + ID.substring(0,k)+ ":");
+		System.out.println("The userId that was decoded is:" + ID.substring(0,k)+ ":");
 		
 		try{
 		userId = Integer.parseInt(ID.substring(0,k));
@@ -43,19 +43,15 @@ public class Data {
 		
 		//get or set
 		ret = cS.substring(10, 13);
-		System.out.println("ret is: " + ret);
 		
 		//the col
 		col=cS.substring(13,15);
-		System.out.println("col is: " + col);
 	}
 	
 	public boolean returnData(){
 		if(ret.equals("get")){
-			System.out.println("get = true");
 			return true;
 		}else{
-			System.out.println("get = false");
 			return false;			
 		}
 	}

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import javax.naming.spi.DirStateFactory.Result;
 
 public class ConnectionMySQL {
-	
+
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
 	private String password = "Password123!";
@@ -26,10 +26,11 @@ public class ConnectionMySQL {
 			System.out.println("Connection Success");
 			stt = conn.createStatement();
 			stt.execute("USE BrainMath");
-//			stt.execute("INSERT INTO user(userId, UserBalance, userName, userPassword, userDifficulty, userMode, userSkip) VALUES" + "('0', '0', 'Quaade94', 'password', '1', '1', '5')");
+			//			stt.execute("INSERT INTO user(userId, UserBalance, userName, userPassword, userDifficulty, userMode, userSkip) VALUES" + "('0', '0', 'Quaade94', 'password', '1', '1', '5')");
 
 		} catch (Exception e){
-			System.err.println(e);		}
+			System.err.println(e);		
+		}
 	}
 	public String getData(int userId, String col) {
 		try {
@@ -37,7 +38,9 @@ public class ConnectionMySQL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if(col.equals("ba")){
+		if(col.equals("id")){
+			column = "userId";
+		}if(col.equals("ba")){
 			column = "userBalance";
 		}else if(col.equals("na")){
 			column = "userName";
@@ -52,7 +55,7 @@ public class ConnectionMySQL {
 		}else{
 			System.out.println("column text error (ConnectionMySQL)");
 		}
-		
+
 		try {
 			while(res.next()){
 				answer = res.getString(column);
@@ -60,12 +63,15 @@ public class ConnectionMySQL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("answer pulled from DB: " + answer);
+		System.out.println("Returning answer from DB: " + answer);
 		return answer;
 	}
 
-	public void setData(int userId, String col, String data) {
-		if(col.equals("ba")){
+	public String setData(int userId, String col, String data) {
+		if(col.equals("id")){
+			column = "userId";
+			dataInput = Integer.parseInt(data);
+		}else if(col.equals("ba")){
 			column = "userBalance";
 			dataInput = Integer.parseInt(data);
 		}else if(col.equals("na")){
@@ -86,23 +92,23 @@ public class ConnectionMySQL {
 		}
 		if(column.equals("userName") || column.equals("userPassword")){
 			try {
-				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE UserId=" + userId);
+				stt.execute("UPDATE user SET " + column + " = " + data + " WHERE userId=" + userId);
+				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + userId);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + userId);
 				e.printStackTrace();
 			}
 		}else{
 			try {
 				stt.execute("UPDATE user SET " + column + " = " + dataInput + " WHERE userId=" + userId);
+				System.out.println("DB: Successfully updated " + column + " with " + dataInput + " for userId: " + userId);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				System.out.println("DB: Failed to update " + column + " with " + dataInput + " for userId: " + userId);
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
-		System.out.println("userId: " + userId + " col: " + col + " data: " + data);		
+		System.out.println("userId: " + userId + " col: " + col + " data: " + data);
+		return "Success";
 	}
 }
 
