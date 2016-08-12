@@ -11,7 +11,7 @@ public class ConnectionMySQL {
 
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
-	private String password = "Password123!";
+	private String password = "";
 	private String answer, column;
 	private int dataInput;
 	ResultSet res;

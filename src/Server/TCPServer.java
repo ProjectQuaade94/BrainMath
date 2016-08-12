@@ -11,7 +11,7 @@ class TCPServer{
 		
 		String fromClient;
 		String toClient;
-		ServerSocket welcomeSocket = new ServerSocket(6789);
+		ServerSocket welcomeSocket = new ServerSocket(53789);
 		ConnectionMySQL CM = new ConnectionMySQL();
 		Data D = new Data(CM);
 		
