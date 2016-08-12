@@ -37,7 +37,7 @@ public class Game {
 			U.setBalance(userId, (currentBalance + coins));
 			pr("##################################################");
 			pr("Level Complete!");
-			if(mode == 5){
+			if(difficulty == 5){
 				pr("Level Score: "+ coins + "/" + q*25);
 
 			}else{
@@ -94,7 +94,7 @@ public class Game {
 						pr("The passwords did not match!");
 					}
 				}
-				U.createUser(userName, userPassword.toLowerCase());
+				userId = U.createUser(userName, userPassword.toLowerCase());
 				pr("User created!");
 				break;
 			}else{
@@ -124,12 +124,12 @@ public class Game {
 			}
 		}
 
-		userName = U.getUserName(userId);
-		userPassword = U.getPassword(userId);
-		difficulty = U.getDifficulty(userId);
-		mode = U.getMode(userId);
-		skip = U.getSkip(userId);
-		currentBalance = U.getBalance(userId);
+//		userName = U.getUserName(userId);
+//		userPassword = U.getPassword(userId);
+//		difficulty = U.getDifficulty(userId);
+//		mode = U.getMode(userId);
+//		skip = U.getSkip(userId);
+//		currentBalance = U.getBalance(userId);
 
 
 	}
@@ -198,6 +198,8 @@ public class Game {
 
 			pr("");
 			pr("User: " + U.getUserName(userId) + "      Coins: " + U.getBalance(userId) + "      Skips: " + U.getSkip(userId));
+			mode = U.getMode(userId);
+			difficulty = U.getDifficulty(userId);
 			pr("Mode: " + strMode[mode-1] + "      Difficulty: " + strDifficulty[difficulty-1]);
 			pr("");
 			pr("Press 1 to begin");

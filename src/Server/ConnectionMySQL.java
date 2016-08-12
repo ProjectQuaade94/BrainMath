@@ -11,7 +11,7 @@ public class ConnectionMySQL {
 
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
-	private String password = "Password123!";
+	private String password = "";
 	private String answer = "", column, userId;
 	private int dataInput;
 	ResultSet res;
@@ -34,6 +34,7 @@ public class ConnectionMySQL {
 	}
 	
 	public String findUser(String userName) {
+		answer = "";
 		System.out.println("looking for " + userName + " in DB");
 		try {
 			res = stt.executeQuery("SELECT * FROM user WHERE userName = '" + userName + "'" );
@@ -56,19 +57,21 @@ public class ConnectionMySQL {
 	}
 	public String creatUser(String username, String password) {
 		try {
-			res = stt.executeQuery("SELECT COUNT(*) FROM user" );
+			res = stt.executeQuery("SELECT COUNT(*) AS rowcount FROM user" );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			while(res.next()){
-				answer = res.getString(userId);
+				answer = Integer.toString(res.getInt("rowcount"));
+				System.out.println("the amount of rows was counted to: " + answer);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
-			stt.execute("INSERT INTO user('userId', 'userBalance', 'userName', 'userPassword', 'userDifficulty', 'userMode', 'userSkip') VALUES("+Integer.parseInt(answer)+", "+0+", '"+username+"', '"+password+"', "+1+", "+1+", "+10+")");
+			System.out.println("Reached MySQL Query for inserting new user");
+			stt.execute("INSERT INTO user (userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip) VALUES ("+Integer.parseInt(answer)+", "+0+", '"+username+"', '"+password+"', "+1+", "+1+", "+10+")");
 			System.out.println("DB: Successfully created user " + username);
 		} catch (SQLException e) {
 			System.out.println("DB: Failed to create user: " + username);

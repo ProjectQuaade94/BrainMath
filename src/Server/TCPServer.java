@@ -7,7 +7,7 @@ import Client.User;
 
 
 class TCPServer{
-	public static void main(String[] args) throws Exception{
+	public void server() throws Exception{
 
 		String fromClient;
 		String toClient;
