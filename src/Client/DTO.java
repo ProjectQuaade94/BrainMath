@@ -1,11 +1,11 @@
 package Client;
 
-public class User{
+public class DTO{
 
 	private String userId, ret, col, message;
 	TCPClient C;
 
-	public User(TCPClient c) {
+	public DTO(TCPClient c) {
 		this.C = c;
 
 	}

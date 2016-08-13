@@ -4,10 +4,11 @@ public class Main {
 
 
 	public static void main(String[] args) throws NumberFormatException, Exception {
-
+		
 		TCPClient C = new TCPClient();
-		User U = new User(C);
+		DTO U = new DTO(C);
 		Game G = new Game(U);
-		G.game();			
+		MainGUI GUI = new MainGUI(G);
+		GUI.mainGUI();		
 	}
 }

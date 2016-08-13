@@ -9,18 +9,16 @@ public class Game {
 	private String strMode[] = {"'+' (Addition)","'-' (Subtraction)","'*' (Multiplication)","'/' (Division)"};
 	private String strDifficulty[] = {"Very Easy","Easy","Medium","Hard","Challenge Mode"};
 	private Scanner sc = new Scanner(System.in);
-	User U;
+	DTO U;
 
-
-
-	public Game(User u) {
+	public Game(DTO u) {
 		this.U = u;
 	}
 
 	public void game() throws NumberFormatException, Exception {
 
-		//FAKE LOGIN HERE
-		startUp();
+		//Login
+		//		startUp();
 		while(true){
 			menu();
 
@@ -58,84 +56,77 @@ public class Game {
 		}
 	}
 
-	private void startUp() throws Exception {
-
-		pr("Connected to Server!");
-		pr("");
-		while(true){
-			pr("Welcome to BrainMath");
-			pr("");
-			pr("Press 1 to login");
-			pr("Press 2 to create account");
-			input = -1;
-			input = input();
-			if(input==1){
-				login();
-				break;
-			}else if(input==2){
-				createAccount();
-				break;
-			}	
-		}
-	}
-
-	private void createAccount() throws NumberFormatException, Exception {
-		while(true){
+	public int createUser(String username, String password1, String password2) throws NumberFormatException, Exception {
+		int ans = 0;
 			pr("CREATE USER");
 			pr("Create Username:");
-			userName = sc.next();
+			userName = username;
+			if(userName.length() >= 4){
 			if(U.findUserId(userName) == -1){
-				while(true){
 					pr("Create Password:");
-					userPassword = sc.next();
+					userPassword = password1;
 					pr("Type it again:");
-					if(sc.next().equals(userPassword)){
-						break;
+					if(userPassword.length() >= 5){
+					if(userPassword.equals(password2)){
+						userId = U.createUser(userName, userPassword.toLowerCase());
+						pr("User created!");
+						userName = U.getUserName(userId);
+						userPassword = U.getPassword(userId);
+						difficulty = U.getDifficulty(userId);
+						mode = U.getMode(userId);
+						skip = U.getSkip(userId);
+						currentBalance = U.getBalance(userId);
+						ans = 0;
 					}else{
+						ans = 2;
 						pr("The passwords did not match!");
 					}
-				}
-				userId = U.createUser(userName, userPassword.toLowerCase());
-				pr("User created!");
-				break;
+					}else{
+						//password too short
+						ans = 4;
+					}
 			}else{
+				ans = 1;
 				pr("That username already exists");			
 			}
-		}
-		userName = U.getUserName(userId);
-		userPassword = U.getPassword(userId);
-		difficulty = U.getDifficulty(userId);
-		mode = U.getMode(userId);
-		skip = U.getSkip(userId);
-		currentBalance = U.getBalance(userId);
+			}else{
+				ans = 3;
+			}
+			return ans;
 	}
 
-	private void login() throws NumberFormatException, Exception {
-
-		while(true){
-			while(true){
-				pr("LOGIN");
-				pr("Username: ");
-				userId = U.findUserId(sc.next());
-				if(userId == -1){
-					pr("User not found!");
-				}else{
-					break;
-				}
-			}
+	public int login(String username, String password) throws NumberFormatException, Exception {
+		int ans = 0;
+		pr("LOGIN");
+		pr("Username: ");
+		
+		if(username.length()>=1){
+		userId = U.findUserId(username);
+		}else{
+			ans = 4;
+		}
+		if(userId == -1){
+			ans = 1;
+		}else{
 			pr("Password: ");
-			if(sc.next().equals(U.getPassword(userId))){
-				break;
+			if(password.length() >= 1){
+			if(password.equals(U.getPassword(userId))){
+				userName = U.getUserName(userId);
+				userPassword = U.getPassword(userId);
+				difficulty = U.getDifficulty(userId);
+				mode = U.getMode(userId);
+				skip = U.getSkip(userId);
+				currentBalance = U.getBalance(userId);
+				ans = 0;
 			}else{
+				ans = 2;
 				pr("Wrong Password");
 			}
+			}else{
+				ans = 3;
+			}
 		}
-		userName = U.getUserName(userId);
-		userPassword = U.getPassword(userId);
-		difficulty = U.getDifficulty(userId);
-		mode = U.getMode(userId);
-		skip = U.getSkip(userId);
-		currentBalance = U.getBalance(userId);
+		return ans;
 	}
 
 	private void askMode() throws Exception {
@@ -205,7 +196,7 @@ public class Game {
 	}
 
 
-	private void menu() throws NumberFormatException, Exception {
+	public void menu() throws NumberFormatException, Exception {
 		while(true){
 			while(true){
 

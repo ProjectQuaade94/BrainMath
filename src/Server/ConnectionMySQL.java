@@ -71,7 +71,7 @@ public class ConnectionMySQL {
 		}
 		try {
 			System.out.println("Reached MySQL Query for inserting new user");
-			stt.execute("INSERT INTO user (userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip) VALUES ("+Integer.parseInt(answer)+", "+0+", '"+username+"', '"+password+"', "+1+", "+1+", "+10+")");
+			stt.execute("INSERT INTO user (userId, userBalance, userName, userPassword, userDifficulty, userMode, userSkip) VALUES ("+Integer.parseInt(answer)+", "+0+", '"+username+"', '"+password+"', "+1+", "+1+", "+5+")");
 			System.out.println("DB: Successfully created user " + username);
 		} catch (SQLException e) {
 			System.out.println("DB: Failed to create user: " + username);

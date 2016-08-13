@@ -3,7 +3,7 @@ package Server;
 import java.io.*;
 import java.net.*;
 
-import Client.User;
+import Client.DTO;
 
 
 class TCPServer{
