@@ -52,11 +52,8 @@ public class Game {
 			pr("");
 			pr("Press 0 to continue...!");
 			q = 0;
-			try{
-				if(sc.nextInt()==0){
-				}
-			}catch(Exception e){
-				pr("Wrong input, try again");
+			input = input();
+			if(input==0){
 			}
 		}
 	}
@@ -65,17 +62,21 @@ public class Game {
 
 		pr("Connected to Server!");
 		pr("");
-		pr("Welcome to BrainMath");
-		pr("");
-		pr("Press 1 to login");
-		pr("Press 2 to create account");
-
-		input = sc.nextInt();
-		if(input==1){
-			login();
-		}else if(input==2){
-			createAccount();
-		}		
+		while(true){
+			pr("Welcome to BrainMath");
+			pr("");
+			pr("Press 1 to login");
+			pr("Press 2 to create account");
+			input = -1;
+			input = input();
+			if(input==1){
+				login();
+				break;
+			}else if(input==2){
+				createAccount();
+				break;
+			}	
+		}
 	}
 
 	private void createAccount() throws NumberFormatException, Exception {
@@ -101,6 +102,12 @@ public class Game {
 				pr("That username already exists");			
 			}
 		}
+		userName = U.getUserName(userId);
+		userPassword = U.getPassword(userId);
+		difficulty = U.getDifficulty(userId);
+		mode = U.getMode(userId);
+		skip = U.getSkip(userId);
+		currentBalance = U.getBalance(userId);
 	}
 
 	private void login() throws NumberFormatException, Exception {
@@ -123,71 +130,76 @@ public class Game {
 				pr("Wrong Password");
 			}
 		}
-
-//		userName = U.getUserName(userId);
-//		userPassword = U.getPassword(userId);
-//		difficulty = U.getDifficulty(userId);
-//		mode = U.getMode(userId);
-//		skip = U.getSkip(userId);
-//		currentBalance = U.getBalance(userId);
-
-
+		userName = U.getUserName(userId);
+		userPassword = U.getPassword(userId);
+		difficulty = U.getDifficulty(userId);
+		mode = U.getMode(userId);
+		skip = U.getSkip(userId);
+		currentBalance = U.getBalance(userId);
 	}
 
 	private void askMode() throws Exception {
-		pr("Select Mode:");
-		pr("1: + (Addition)");
-		pr("2: - (Subtraction)");
-		pr("3: * (Multiplication)");
-		pr("4: / (Division)");
-		try{
-			input = sc.nextInt();
-		}catch(Exception e){
-			pr("Wrong input, try again");
-		}
-		if(input == 1){
-			mode = 1;
+		while(true){
+			pr("Select Mode:");
+			pr("1: + (Addition)");
+			pr("2: - (Subtraction)");
+			pr("3: * (Multiplication)");
+			pr("4: / (Division)");
+			input = -1;
+			input = input();
 
-			pr("Selected: " + strMode[mode-1]);
-		}else if (input == 2){
-			mode = 2;
-			pr("Selected: " + strMode[mode-1]);
-		}else if (input == 3){
-			mode = 3;
-			pr("Selected: " + strMode[mode-1]);
-		}else if (input == 4){
-			mode = 4;
-			pr("Selected: " + strMode[mode-1]);
+			if(input == 1){
+				mode = 1;
+				pr("Selected: " + strMode[mode-1]);
+				break;
+			}else if (input == 2){
+				mode = 2;
+				pr("Selected: " + strMode[mode-1]);
+				break;
+			}else if (input == 3){
+				mode = 3;
+				pr("Selected: " + strMode[mode-1]);
+				break;
+			}else if (input == 4){
+				mode = 4;
+				pr("Selected: " + strMode[mode-1]);
+				break;
+			}
 		}
 		U.setMode(userId, mode);
 	}
 	private void askDifficulty() throws Exception {
-		pr("Select Difficulty:");
-		pr("1: Very Easy");
-		pr("2: Easy");
-		pr("3: Medium");
-		pr("4: Hard");
-		pr("5: Challenge Mode (X5 coins)");
-		try{
-			input = sc.nextInt();
-		}catch(Exception e){
-			pr("Wrong input, try again");
-		}
-		if(input == 1){
-			difficulty = 1;
-			pr("Selected: " + strDifficulty[difficulty-1]);
-		}else if (input == 2){
-			difficulty = 2;
-			pr("Selected: " + strDifficulty[difficulty-1]);
-		}else if (input == 3){
-			difficulty = 3;
-			pr("Selected: " + strDifficulty[difficulty-1]);
-		}else if (input == 4){
-			difficulty = 4;
-			pr("Selected: " + strDifficulty[difficulty-1]);
-		}else if (input == 5){
-			difficulty = 5;
-			pr("Selected: " + strDifficulty[difficulty-1]);
+		while(true){
+			pr("Select Difficulty:");
+			pr("1: Very Easy");
+			pr("2: Easy");
+			pr("3: Medium");
+			pr("4: Hard");
+			pr("5: Challenge Mode (X5 coins)");
+
+			input = -1;
+			input = input();
+			if(input == 1){
+				difficulty = 1;
+				pr("Selected: " + strDifficulty[difficulty-1]);
+				break;
+			}else if (input == 2){
+				difficulty = 2;
+				pr("Selected: " + strDifficulty[difficulty-1]);
+				break;
+			}else if (input == 3){
+				difficulty = 3;
+				pr("Selected: " + strDifficulty[difficulty-1]);
+				break;
+			}else if (input == 4){
+				difficulty = 4;
+				pr("Selected: " + strDifficulty[difficulty-1]);
+				break;
+			}else if (input == 5){
+				difficulty = 5;
+				pr("Selected: " + strDifficulty[difficulty-1]);
+				break;
+			}
 		}
 		U.setDifficulty(userId, difficulty);
 	}
@@ -195,59 +207,64 @@ public class Game {
 
 	private void menu() throws NumberFormatException, Exception {
 		while(true){
+			while(true){
 
-			pr("");
-			pr("User: " + U.getUserName(userId) + "      Coins: " + U.getBalance(userId) + "      Skips: " + U.getSkip(userId));
-			mode = U.getMode(userId);
-			difficulty = U.getDifficulty(userId);
-			pr("Mode: " + strMode[mode-1] + "      Difficulty: " + strDifficulty[difficulty-1]);
-			pr("");
-			pr("Press 1 to begin");
-			pr("Press 2 to change mode");
-			pr("Press 3 to change difficulty");
-			pr("Press 4 to go to the store");
-			pr("Press 5 for about/help");
-			pr("Press 6 to quit");
-			pr("");
-			try{
-				input = sc.nextInt();
-			}catch(Exception e){
-				pr("Wrong input, try again");
-			}
-			if(input==1){
-				break;
-			}else if(input==2){
-				askMode();
+				pr("");
+				pr("User: " + U.getUserName(userId) + "      Coins: " + U.getBalance(userId) + "      Skips: " + U.getSkip(userId));
+				mode = U.getMode(userId);
+				difficulty = U.getDifficulty(userId);
+				pr("Mode: " + strMode[mode-1] + "      Difficulty: " + strDifficulty[difficulty-1]);
+				pr("");
+				pr("Press 1 to begin");
+				pr("Press 2 to change mode");
+				pr("Press 3 to change difficulty");
+				pr("Press 4 to go to the store");
+				pr("Press 5 for about/help");
+				pr("Press 6 to quit");
+				pr("");
+				input = -1;
+				input = input();
 
-			}else if(input == 3){
-				askDifficulty();
+				if(input==1){
+					break;
 
-			}else if(input == 4){
-				store();
+				}else if(input==2){
+					askMode();
+					break;
+				}else if(input == 3){
+					askDifficulty();
+					break;
+				}else if(input == 4){
+					store();
+					break;
+				}else if(input==5){
+					while(true){
+						pr("ABOUT:");
+						pr("");
+						pr("This game was created by Lars Quaade with the idea of improving math skills and speed for people at any level of expertise");
+						pr("");
+						pr("HELP:");
+						pr("");
+						pr("Upon pressing '1' to start the game, you will be given a math question. You will need to type the answer and then hit 'enter'. for each correct answer you will recieve 5 coins and for each wrong answer, you will loose 1 coin. The coins can be spent in the store. Skips allow you to skip a question without recieving a reward. Good Luck :-)");
+						pr("");
+						pr("Press '0' to go back");
+						pr("");
 
-			}else if(input==5){
-				pr("ABOUT:");
-				pr("");
-				pr("This game was created by Lars Quaade with the idea of improving math skills and speed for people at any level of expertise");
-				pr("");
-				pr("HELP:");
-				pr("");
-				pr("Upon pressing '1' to start the game, you will be given a math question. You will need to type the answer and then hit 'enter'. for each correct answer you will recieve 5 coins and for each wrong answer, you will loose 1 coin. The coins can be spent in the store. Skips allow you to skip a question without recieving a reward. Good Luck :-)");
-				pr("");
-				pr("Press '0' to go back");
-				pr("");
-				try{
-					input = sc.nextInt();
-				}catch(Exception e){
-					pr("Wrong input, try again");
-				}				if(input==0){
+						input = -1;
+						input = input();
+						if(input==0){
+							break;
+						}
+					}
+				}else if(input==6){
+					U.closeConnection();
+					Thread.sleep(1000);
+					System.exit(0);
+				}else{
 				}
-			}else if(input==6){
-				U.closeConnection();
-				Thread.sleep(1000);
-				System.exit(0);
-			}else{
-				pr("Wrong Input, try again");
+			}
+			if(input == 1){
+				break;
 			}
 		}		
 	}
@@ -257,20 +274,19 @@ public class Game {
 		pr("Press 1 to buy skips");
 		pr("Press 0 to go back");
 		while(true){
-			try{
-				input = sc.nextInt();
-			}catch(Exception e){
-				pr("Wrong input, try again");
-			}			
+			input = -1;
+			input = input();		
 			if(input == 1){
 				pr("How many skips do you wish to buy?");
-				input = sc.nextInt();
+				input = -1;
+				input = input();
 				currentBalance = U.getBalance(userId);
 				if(currentBalance>=50*input){
 					U.setBalance(userId, (currentBalance-50*input));
 					int currentSkips = U.getSkip(userId);
 					U.setSkip(userId, (currentSkips+input));
-					pr("You payed: " + 50*input + " coins, and recieved: " + input + " skips     "+ U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
+					pr("You payed: " + 50*input + " coins, and recieved: " + input + " skips");
+					pr(U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
 				}else{
 					pr("You do not have sufficient funds to buy that");
 				}
@@ -281,10 +297,20 @@ public class Game {
 
 	}
 
+	private int input() {
+		try{
+			input = sc.nextInt();
+		}catch(Exception e){
+			pr("Wrong input, try again");
+			pr(sc.next() + " was not valid input.");
+		}		
+		return input;
+	}
+
 	private void pr(String message) {
 
 
-		if(message.length()<50){
+		if(message.length()<60){
 			System.out.println(message);
 		}else{
 			for(int i=0; i<message.length(); i=i+60){
@@ -349,11 +375,9 @@ public class Game {
 		pr(ans1 + " "+ sign + " " + ans2 + " = ?");
 
 		while(true){
-			try{
-				input = sc.nextInt();
-			}catch(Exception e){
-				pr("Wrong input, try again");
-			}			if(input == ans){
+			input = -1;
+			input = input();
+			if(input == ans){
 				if (difficulty != 5){
 					pr("Correct! +5 coins");
 					coins+=5;
