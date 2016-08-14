@@ -1,8 +1,8 @@
-package Client;
+
 
 import java.util.Scanner;
 
-public class Game {
+public class OldGame {
 
 	private int q, tq = 10, coins = 0,ans1,ans2,ans,input,mode,difficulty,nrAmount,userId=-1,skip, currentBalance;
 	private String sign, userName, userPassword;
@@ -11,14 +11,14 @@ public class Game {
 	private Scanner sc = new Scanner(System.in);
 	DTO U;
 
-	public Game(DTO u) {
+	public OldGame(DTO u) {
 		this.U = u;
 	}
 
 	public void game() throws NumberFormatException, Exception {
 
 		//Login
-		//		startUp();
+		startUp();
 		while(true){
 			menu();
 
@@ -56,77 +56,84 @@ public class Game {
 		}
 	}
 
-	public int createUser(String username, String password1, String password2) throws NumberFormatException, Exception {
-		int ans = 0;
-			pr("CREATE USER");
-			pr("Create Username:");
-			userName = username;
-			if(userName.length() >= 4){
-			if(U.findUserId(userName) == -1){
-					pr("Create Password:");
-					userPassword = password1;
-					pr("Type it again:");
-					if(userPassword.length() >= 5){
-					if(userPassword.equals(password2)){
-						userId = U.createUser(userName, userPassword.toLowerCase());
-						pr("User created!");
-						userName = U.getUserName(userId);
-						userPassword = U.getPassword(userId);
-						difficulty = U.getDifficulty(userId);
-						mode = U.getMode(userId);
-						skip = U.getSkip(userId);
-						currentBalance = U.getBalance(userId);
-						ans = 0;
-					}else{
-						ans = 2;
-						pr("The passwords did not match!");
-					}
-					}else{
-						//password too short
-						ans = 4;
-					}
-			}else{
-				ans = 1;
-				pr("That username already exists");			
-			}
-			}else{
-				ans = 3;
-			}
-			return ans;
+	private void startUp() throws Exception {
+
+		pr("Connected to Server!");
+		pr("");
+		while(true){
+			pr("Welcome to BrainMath");
+			pr("");
+			pr("Press 1 to login");
+			pr("Press 2 to create account");
+			input = -1;
+			input = input();
+			if(input==1){
+				login();
+				break;
+			}else if(input==2){
+				createAccount();
+				break;
+			}	
+		}
 	}
 
-	public int login(String username, String password) throws NumberFormatException, Exception {
-		int ans = 0;
-		pr("LOGIN");
-		pr("Username: ");
-		
-		if(username.length()>=1){
-		userId = U.findUserId(username);
-		}else{
-			ans = 4;
-		}
-		if(userId == -1){
-			ans = 1;
-		}else{
-			pr("Password: ");
-			if(password.length() >= 1){
-			if(password.equals(U.getPassword(userId))){
-				userName = U.getUserName(userId);
-				userPassword = U.getPassword(userId);
-				difficulty = U.getDifficulty(userId);
-				mode = U.getMode(userId);
-				skip = U.getSkip(userId);
-				currentBalance = U.getBalance(userId);
-				ans = 0;
+	private void createAccount() throws NumberFormatException, Exception {
+		while(true){
+			pr("CREATE USER");
+			pr("Create Username:");
+			userName = sc.next();
+			if(U.findUserId(userName) == -1){
+				while(true){
+					pr("Create Password:");
+					userPassword = sc.next();
+					pr("Type it again:");
+					if(sc.next().equals(userPassword)){
+						break;
+					}else{
+						pr("The passwords did not match!");
+					}
+				}
+				userId = U.createUser(userName, userPassword.toLowerCase());
+				pr("User created!");
+				break;
 			}else{
-				ans = 2;
+				pr("That username already exists");			
+			}
+		}
+		userName = U.getUserName(userId);
+		userPassword = U.getPassword(userId);
+		difficulty = U.getDifficulty(userId);
+		mode = U.getMode(userId);
+		skip = U.getSkip(userId);
+		currentBalance = U.getBalance(userId);
+	}
+
+	private void login() throws NumberFormatException, Exception {
+
+		while(true){
+			while(true){
+				pr("LOGIN");
+				pr("Username: ");
+				userId = U.findUserId(sc.next());
+				if(userId == -1){
+					pr("User not found!");
+				}else{
+					break;
+				}
+			}
+			pr("Password: ");
+			if(sc.next().equals(U.getPassword(userId))){
+				break;
+			}else{
 				pr("Wrong Password");
 			}
-			}else{
-				ans = 3;
-			}
 		}
-		return ans;
+		userName = U.getUserName(userId);
+		userPassword = U.getPassword(userId);
+		difficulty = U.getDifficulty(userId);
+		mode = U.getMode(userId);
+		skip = U.getSkip(userId);
+		currentBalance = U.getBalance(userId);
 	}
 
 	private void askMode() throws Exception {
@@ -196,7 +203,7 @@ public class Game {
 	}
 
 
-	public void menu() throws NumberFormatException, Exception {
+	private void menu() throws NumberFormatException, Exception {
 		while(true){
 			while(true){
 
@@ -226,7 +233,7 @@ public class Game {
 					askDifficulty();
 					break;
 				}else if(input == 4){
-//					store();
+					store();
 					break;
 				}else if(input==5){
 					while(true){
@@ -260,33 +267,33 @@ public class Game {
 		}		
 	}
 
-//	private void store() throws NumberFormatException, Exception {
-//		pr("Skips cost 50 coins");
-//		pr("Press 1 to buy skips");
-//		pr("Press 0 to go back");
-//		while(true){
-//			input = -1;
-//			input = input();		
-//			if(input == 1){
-//				pr("How many skips do you wish to buy?");
-//				input = -1;
-//				input = input();
-//				currentBalance = U.getBalance(userId);
-//				if(currentBalance>=50*input){
-//					U.setBalance(userId, (currentBalance-50*input));
-//					int currentSkips = U.getSkip(userId);
-//					U.setSkip(userId, (currentSkips+input));
-//					pr("You payed: " + 50*input + " coins, and recieved: " + input + " skips");
-//					pr(U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
-//				}else{
-//					pr("You do not have sufficient funds to buy that");
-//				}
-//			}else if(input == 0){
-//				break;
-//			}
-//		}
-//
-//	}
+	private void store() throws NumberFormatException, Exception {
+		pr("Skips cost 50 coins");
+		pr("Press 1 to buy skips");
+		pr("Press 0 to go back");
+		while(true){
+			input = -1;
+			input = input();		
+			if(input == 1){
+				pr("How many skips do you wish to buy?");
+				input = -1;
+				input = input();
+				currentBalance = U.getBalance(userId);
+				if(currentBalance>=50*input){
+					U.setBalance(userId, (currentBalance-50*input));
+					int currentSkips = U.getSkip(userId);
+					U.setSkip(userId, (currentSkips+input));
+					pr("You payed: " + 50*input + " coins, and recieved: " + input + " skips");
+					pr(U.getUserName(userId) + "'s Coins: " + U.getBalance(userId));
+				}else{
+					pr("You do not have sufficient funds to buy that");
+				}
+			}else if(input == 0){
+				break;
+			}
+		}
+
+	}
 
 	private int input() {
 		try{
@@ -389,15 +396,5 @@ public class Game {
 				coins-=1;
 			}
 		}
-	}
-
-	public boolean buyskip() throws NumberFormatException, Exception {
-		
-		if(U.getBalance(userId) >= 50){
-			U.setBalance(userId, (U.getBalance(userId)-50));
-			return true;
-		}else{
-			return false;	
-		}		
 	}
 }
